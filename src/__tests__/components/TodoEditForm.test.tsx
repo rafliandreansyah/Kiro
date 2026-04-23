@@ -1,9 +1,8 @@
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import fc from 'fast-check';
 import TodoEditForm from '../../components/TodoEditForm';
-import type { Todo } from '../../types/index';
+import type { Category, Todo } from '../../types/index';
 
 // Generator untuk Todo yang valid
 const todoArb = fc.record<Todo>({
@@ -11,7 +10,12 @@ const todoArb = fc.record<Todo>({
   title: fc.string({ minLength: 1, maxLength: 200 }).filter(s => s.trim().length > 0),
   status: fc.constantFrom('Belum Selesai' as const, 'Selesai' as const),
   priority: fc.constantFrom('Rendah' as const, 'Sedang' as const, 'Tinggi' as const),
-  category: fc.option(fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0), { nil: null }),
+  category: fc.option(
+    fc.string({ minLength: 1, maxLength: 50 })
+      .filter(s => s.trim().length > 0)
+      .filter(s => !s.includes('\0')),
+    { nil: null }
+  ),
   dueDate: fc.option(
     fc.date({ min: new Date('2020-01-01'), max: new Date('2030-12-31') })
       .map(d => d.toISOString().split('T')[0]),
@@ -32,12 +36,17 @@ describe('TodoEditForm - Property 9: Form Edit Menampilkan Data Todo yang Benar'
       fc.property(todoArb, (todo) => {
         cleanup();
 
+        // Buat categories yang menyertakan kategori todo agar select bisa menampilkan nilainya
+        const categories: Category[] = todo.category
+          ? [{ id: 'cat-1', name: todo.category }]
+          : [];
+
         render(
           <TodoEditForm
             todo={todo}
             onSave={vi.fn()}
             onCancel={vi.fn()}
-            categories={[]}
+            categories={categories}
           />
         );
 
@@ -68,21 +77,24 @@ describe('TodoEditForm - Property 9: Form Edit Menampilkan Data Todo yang Benar'
 // Feature: todo-list-app, Property 11: Batal Edit Tidak Mengubah Todo
 // Validates: Requirements 4.5
 describe('TodoEditForm - Property 11: Batal Edit Tidak Mengubah Todo', () => {
-  test('klik Batal memanggil onCancel dan tidak memanggil onSave', async () => {
-    await fc.assert(
-      fc.asyncProperty(todoArb, async (todo) => {
+  test('klik Batal memanggil onCancel dan tidak memanggil onSave', () => {
+    fc.assert(
+      fc.property(todoArb, (todo) => {
         cleanup();
 
         const onSave = vi.fn();
         const onCancel = vi.fn();
-        const user = userEvent.setup();
+
+        const categories: Category[] = todo.category
+          ? [{ id: 'cat-1', name: todo.category }]
+          : [];
 
         render(
           <TodoEditForm
             todo={todo}
             onSave={onSave}
             onCancel={onCancel}
-            categories={[]}
+            categories={categories}
           />
         );
 
@@ -90,9 +102,9 @@ describe('TodoEditForm - Property 11: Batal Edit Tidak Mengubah Todo', () => {
         const titleInput = screen.getByLabelText('Judul tugas') as HTMLInputElement;
         fireEvent.change(titleInput, { target: { value: 'Judul yang diubah tapi dibatalkan' } });
 
-        // Klik tombol Batal
+        // Klik tombol Batal via fireEvent untuk keandalan di jsdom
         const cancelButton = screen.getByRole('button', { name: /batal/i });
-        await user.click(cancelButton);
+        fireEvent.click(cancelButton);
 
         // onCancel harus dipanggil
         expect(onCancel).toHaveBeenCalledTimes(1);

@@ -166,7 +166,7 @@ Implementasi aplikasi Todo-List berbasis React + TypeScript + Tailwind CSS denga
     - **Validates: Requirements 7.2**
     - File: `src/__tests__/property/sort.property.test.ts`
 
-- [ ] 8. Implementasi komponen TodoItem dan TodoEditForm
+- [-] 8. Implementasi komponen TodoItem dan TodoEditForm
   - [x] 8.1 Implementasi `TodoEditForm` di `src/components/TodoEditForm.tsx`
     - Props: `todo`, `onSave`, `onCancel`
     - Pre-populate semua field dengan data todo yang ada
@@ -174,13 +174,13 @@ Implementasi aplikasi Todo-List berbasis React + TypeScript + Tailwind CSS denga
     - Tombol "Simpan" dan "Batal"
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-  - [-] 8.2 Tulis property test untuk TodoEditForm
+  - [x] 8.2 Tulis property test untuk TodoEditForm
     - **Property 9: Form Edit Menampilkan Data Todo yang Benar** — semua field terisi sesuai data todo
     - **Property 11: Batal Edit Tidak Mengubah Todo** — `onCancel` dipanggil tanpa memanggil `onSave`
     - **Validates: Requirements 4.2, 4.5**
     - File: `src/__tests__/components/TodoEditForm.test.tsx`
 
-  - [~] 8.3 Implementasi `TodoItem` di `src/components/TodoItem.tsx`
+  - [x] 8.3 Implementasi `TodoItem` di `src/components/TodoItem.tsx`
     - Props: `todo`, `onToggle`, `onEdit`, `onDelete`
     - Tampilkan: checkbox, judul (dengan strikethrough jika "Selesai"), badge priority, kategori, due date
     - Tampilkan indikator "Terlambat" jika dueDate < hari ini dan status "Belum Selesai"
@@ -188,46 +188,46 @@ Implementasi aplikasi Todo-List berbasis React + TypeScript + Tailwind CSS denga
     - Tombol "Hapus" membuka `ConfirmDialog`
     - _Requirements: 2.2, 2.5, 3.1, 3.2, 4.1, 5.1, 5.2_
 
-  - [~] 8.4 Tulis property test untuk TodoItem
+  - [x] 8.4 Tulis property test untuk TodoItem
     - **Property 4: TodoItem Menampilkan Semua Atribut** — semua atribut todo dirender
     - **Property 6: Indikator "Terlambat" Muncul Tepat** — muncul iff dueDate lewat + status "Belum Selesai"
     - **Property 13: Batal Hapus Mempertahankan Todo** — `onDelete` tidak dipanggil saat batal
     - **Validates: Requirements 2.2, 2.5, 5.4**
     - File: `src/__tests__/components/TodoItem.test.tsx`
 
-  - [~] 8.5 Tulis unit test untuk TodoItem
+  - [x] 8.5 Tulis unit test untuk TodoItem
     - Test keberadaan checkbox, tombol Edit, tombol Hapus
     - Test strikethrough pada todo "Selesai"
     - Test indikator "Terlambat" tidak muncul pada todo "Selesai" meski dueDate lewat
     - File: `src/__tests__/components/TodoItem.test.tsx`
 
-- [ ] 9. Implementasi TodoList dan CategoryManager
-  - [~] 9.1 Implementasi `TodoList` di `src/components/TodoList.tsx`
+- [x] 9. Implementasi TodoList dan CategoryManager
+  - [x] 9.1 Implementasi `TodoList` di `src/components/TodoList.tsx`
     - Terima `todos` yang sudah difilter dan diurutkan
     - Render daftar `TodoItem`
     - Tampilkan pesan "Belum ada tugas. Tambahkan tugas pertama Anda!" jika list kosong
     - _Requirements: 2.1, 2.3_
 
-  - [~] 9.2 Implementasi `CategoryManager` di `src/components/CategoryManager.tsx`
+  - [x] 9.2 Implementasi `CategoryManager` di `src/components/CategoryManager.tsx`
     - Props: `categories`, `todos`, `onAdd`, `onDelete`
     - Form tambah kategori baru dengan validasi
     - Daftar kategori dengan tombol hapus (disabled jika ada todo terkait)
     - Tampilkan pesan error dari Validator
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-  - [~] 9.3 Tulis property test untuk CategoryManager
+  - [x] 9.3 Tulis property test untuk CategoryManager
     - **Property 17: Nama Kategori Unik** — submit nama duplikat menampilkan error
     - **Property 18: Kategori dengan Todo Tidak Bisa Dihapus** — tombol hapus disabled/error jika ada todo
     - **Property 19: Semua Kategori Muncul di Form Todo** — semua kategori ada di selector
     - **Validates: Requirements 8.2, 8.4, 8.5**
     - File: `src/__tests__/property/category.property.test.ts`
 
-- [~] 10. Checkpoint — Pastikan semua komponen berfungsi secara terisolasi
+- [x] 10. Checkpoint — Pastikan semua komponen berfungsi secara terisolasi
   - Jalankan `vitest --run` dan pastikan semua test komponen lulus
   - Tanyakan kepada pengguna jika ada pertanyaan sebelum melanjutkan.
 
-- [ ] 11. Integrasi: Rakit semua komponen di App.tsx
-  - [~] 11.1 Buat `src/App.tsx` yang merakit semua komponen
+- [x] 11. Integrasi: Rakit semua komponen di App.tsx
+  - [x] 11.1 Buat `src/App.tsx` yang merakit semua komponen
     - Bungkus seluruh aplikasi dengan `AppProvider`
     - Susun layout: `Header`, `TodoForm`, `CategoryManager`, `FilterBar`, `SortBar`, `SummaryBar`, `TodoList`, `NotificationToast`
     - Gunakan `useAppContext` untuk mengambil state dan dispatch
@@ -235,24 +235,24 @@ Implementasi aplikasi Todo-List berbasis React + TypeScript + Tailwind CSS denga
     - Tombol "Hapus Semua Tugas Selesai" dengan `ConfirmDialog`
     - _Requirements: 1.1, 2.1, 5.5, 5.6, 6.7, 7.3_
 
-  - [~] 11.2 Implementasi `Header` di `src/components/Header.tsx`
+  - [x] 11.2 Implementasi `Header` di `src/components/Header.tsx`
     - Judul aplikasi
     - Responsif untuk lebar 320px–1920px
     - _Requirements: 10.1_
 
-  - [~] 11.3 Terapkan styling Tailwind CSS secara konsisten
+  - [x] 11.3 Terapkan styling Tailwind CSS secara konsisten
     - Responsif (mobile-first)
     - Dark mode via `dark:` prefix (mengikuti preferensi sistem `prefers-color-scheme`)
     - Label deskriptif pada semua elemen interaktif (`aria-label`, `htmlFor`)
     - _Requirements: 10.1, 10.2, 10.3, 10.5, 10.6_
 
-  - [~] 11.4 Tulis integration test untuk alur utama
+  - [x] 11.4 Tulis integration test untuk alur utama
     - Test alur: tambah todo → muncul di list → toggle → status berubah → hapus → hilang dari list
     - **Property 1: Penambahan Todo Menghasilkan Todo di List**
     - **Validates: Requirements 1.2, 2.1, 3.2, 5.3**
     - File: `src/__tests__/property/todo.property.test.ts`
 
-- [~] 12. Final Checkpoint — Pastikan semua test lulus dan aplikasi berjalan
+- [x] 12. Final Checkpoint — Pastikan semua test lulus dan aplikasi berjalan
   - Jalankan `vitest --run` dan pastikan seluruh test suite lulus (unit, component, property)
   - Verifikasi tidak ada TypeScript error dengan `tsc --noEmit`
   - Tanyakan kepada pengguna jika ada pertanyaan sebelum selesai.

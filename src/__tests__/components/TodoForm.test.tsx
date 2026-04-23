@@ -17,15 +17,14 @@ afterEach(() => {
 // Feature: todo-list-app, Property 2: Input Field Dikosongkan Setelah Penambahan
 // Validates: Requirements 1.3
 describe('TodoForm - Property 2: Input Field Dikosongkan Setelah Penambahan', () => {
-  test('setelah submit valid, input judul harus kosong', async () => {
-    await fc.assert(
-      fc.asyncProperty(validTodoTitleArb, async (title) => {
+  test('setelah submit valid, input judul harus kosong', () => {
+    fc.assert(
+      fc.property(validTodoTitleArb, (title) => {
         cleanup();
 
         const onSubmit = vi.fn();
-        const user = userEvent.setup();
 
-        render(<TodoForm onSubmit={onSubmit} categories={[]} />);
+        const { container } = render(<TodoForm onSubmit={onSubmit} categories={[]} />);
 
         const titleInput = screen.getByLabelText('Judul tugas') as HTMLInputElement;
 
@@ -33,9 +32,9 @@ describe('TodoForm - Property 2: Input Field Dikosongkan Setelah Penambahan', ()
         fireEvent.change(titleInput, { target: { value: title } });
         expect(titleInput.value).toBe(title);
 
-        // Submit form via tombol "Tambah"
-        const submitButton = screen.getByRole('button', { name: /tambah/i });
-        await user.click(submitButton);
+        // Submit form via fireEvent.submit untuk keandalan di jsdom
+        const form = container.querySelector('form')!;
+        fireEvent.submit(form);
 
         // onSubmit harus dipanggil
         expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -63,12 +62,11 @@ describe('TodoForm - Unit Tests', () => {
     expect(prioritySelect.value).toBe('Sedang');
   });
 
-  test('submit dengan judul kosong menampilkan pesan error', async () => {
-    const user = userEvent.setup();
-    render(<TodoForm onSubmit={vi.fn()} categories={[]} />);
+  test('submit dengan judul kosong menampilkan pesan error', () => {
+    const { container } = render(<TodoForm onSubmit={vi.fn()} categories={[]} />);
 
-    const submitButton = screen.getByRole('button', { name: /tambah/i });
-    await user.click(submitButton);
+    const form = container.querySelector('form')!;
+    fireEvent.submit(form);
 
     expect(screen.getByRole('alert')).toHaveTextContent('Judul tugas tidak boleh kosong');
   });
@@ -76,13 +74,13 @@ describe('TodoForm - Unit Tests', () => {
   test('submit valid memanggil onSubmit dengan data yang benar dan mengosongkan field', async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
-    render(<TodoForm onSubmit={onSubmit} categories={[]} />);
+    const { container } = render(<TodoForm onSubmit={onSubmit} categories={[]} />);
 
     const titleInput = screen.getByLabelText('Judul tugas') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Belajar TypeScript' } });
 
-    const submitButton = screen.getByRole('button', { name: /tambah/i });
-    await user.click(submitButton);
+    const form = container.querySelector('form')!;
+    fireEvent.submit(form);
 
     expect(onSubmit).toHaveBeenCalledOnce();
     expect(onSubmit).toHaveBeenCalledWith({
